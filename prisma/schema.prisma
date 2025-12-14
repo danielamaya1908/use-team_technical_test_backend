@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+}
+
+model Column {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  order     Int
+  cards     Card[]
+  createdAt DateTime @default(now())
+}
+
+model Card {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  columnId  String   @db.ObjectId
+  order     Int
+  column    Column   @relation(fields: [columnId], references: [id])
+  createdAt DateTime @default(now())
+}
