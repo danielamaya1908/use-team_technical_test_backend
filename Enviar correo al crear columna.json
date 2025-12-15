@@ -1,0 +1,94 @@
+{
+  "name": "Enviar correo al crear columna",
+  "nodes": [
+    {
+      "parameters": {
+        "interval": 60
+      },
+      "name": "Trigger Polling",
+      "type": "n8n-nodes-base.interval",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        16
+      ],
+      "id": "ae1631af-5544-4e2d-a297-69aa3e6686b2"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/columns",
+        "jsonParameters": true,
+        "options": {}
+      },
+      "name": "Get Columnas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        144,
+        32
+      ],
+      "id": "26daef5a-3824-4435-b57b-98664a6bcfa1"
+    },
+    {
+      "parameters": {
+        "fromEmail": "danielamaya1908@gmail.com",
+        "toEmail": "={{$json[\"TO\"]}}",
+        "ccEmail": "danielamaya1908@gmail.com",
+        "subject": "=📌 Nueva columna: {{$json[\"title\"]}}",
+        "text": "=🚀 SE HA CREADO UNA NUEVA COLUMNA\n\n📋 Nombre: {{$json[\"title\"]}}\n🔑 ID: {{$json[\"id\"]}}\n📅 Fecha creación: {{$json[\"createdAt\"]}}\n🔢 Orden: {{$json[\"order\"]}}\n🔄 Fecha actualización: {{$json[\"updatedAt\"]}}\n🃏 Tarjetas: {{$json[\"cards\"].length}}\n\n---\nEnviado automáticamente desde el sistema.",
+        "html": "=<h2 style=\"color: #2c3e50;\">🚀 Nueva columna creada</h2>\n\n<table style=\"border-collapse: collapse; width: 100%; max-width: 600px;\">\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: bold; background-color: #f2f2f2;\">📋 Nombre:</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">{{$json[\"title\"]}}</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: bold; background-color: #f2f2f2;\">🔑 ID:</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">{{$json[\"id\"]}}</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: bold; background-color: #f2f2f2;\">📅 Fecha creación:</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">{{$json[\"createdAt\"]}}</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: bold; background-color: #f2f2f2;\">🔢 Orden:</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">{{$json[\"order\"]}}</td>\n  </tr>\n  <tr>\n    <td style=\"padding: 8px; border: 1px solid #ddd; font-weight: bold; background-color: #f2f2f2;\">🃏 Tarjetas:</td>\n    <td style=\"padding: 8px; border: 1px solid #ddd;\">{{$json[\"cards\"].length}}</td>\n  </tr>\n</table>\n\n<hr style=\"margin: 20px 0; border: none; border-top: 1px solid #eee;\">\n\n<p style=\"color: #7f8c8d; font-size: 12px;\">\n  <em>Este correo fue enviado automáticamente desde el sistema.</em>\n</p>",
+        "options": {}
+      },
+      "name": "Enviar Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -32
+      ],
+      "id": "87e6d50e-31f3-4306-b097-4dc32b28ad8e",
+      "credentials": {
+        "smtp": {
+          "id": "ezEpPqbx49pdPcCj",
+          "name": "SMTP account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Trigger Polling": {
+      "main": [
+        [
+          {
+            "node": "Get Columnas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Columnas": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9eb0117a-c8cf-48df-b7d8-860da11ab04b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0252f58e6b62bb62a8123707437ecfbbe245bea0b8131f02df6f9e0f7af78195"
+  },
+  "id": "UEr61LZ4xzFx1lG5",
+  "tags": []
+}
